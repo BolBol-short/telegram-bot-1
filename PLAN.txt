@@ -1,0 +1,23 @@
+TELEGRAM BOT - PROJECT PLAN
+
+Author : Bol (Github - @BolBol-short)
+
+I. What is this bot about?
+- This bot is a personal telegram assistant.
+- 
+
+II. Target User
+- My beloved big brother (who is a muslim and he is more like a best friend)
+- Muslim in general
+
+III. Commands
+-
+
+IV. Current State 
+
+V. Tech Stack
+- Python
+
+VI. API usage
+- Google Gemini API
+- AlAdhan API 
