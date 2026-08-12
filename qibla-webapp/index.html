@@ -3,20 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qibla Compass</title>
+    <title>Qibla Direction</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { 
+            font-family: sans-serif; 
+            text-align: center; 
+            padding: 30px;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+        }
+        #arrow {
+            font-size: 100px;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        #bearing {
+            font-size: 22px;
+            margin: 12px;
+            font-weight: bold;
+        }
+        #status {
+            color: var(--tg-theme-hint-color, gray);
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Working</h1>
-    <p id="greeting">Loading...</p>
+    <h1>Qibla Compass</h1>
+    <div id="arrow">↑</div>
+    <div id="bearing">-</div>
+    <div id="status">Getting your location...</div>
+
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
 
-        const user = tg.initDataUnsafe.user;
-        const name = user ? user.first_name : "friend";
-        document.getElementById("greeting").textContent = 
-        `Hello, ${name} !`;
+        const KAABA_LAT = 21.4225;
+        const KAABA_LON = 39.8262;
+
+        const toRad = (deg) => deg * Math.PI / 180;
+        const toDeg = (rad) => rad * 180 / Math.PI;
+
+        function qiblaBearing(lat, lon){
+            const dLon = toRad(KAABA_LON - lon);
+            const lat1 = toRad(lat);
+            const lat2 = toRad(KAABA_LAT);
+
+            const y = Math.sin(dLon) * Math.cos(lat2);
+            const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+
+            let bearing = toDeg(Math.atan2(y, x));
+            return (bearing + 360) % 360;
+        }
+
+        function showQibla(position){
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const bearing = qiblaBearing(lat, lon);
+
+            document.getElementById("bearing").textContent =
+                "Qibla: " + bearing.toFixed(0) + " Deg from North";
+            document.getElementById("status").textContent =
+                "You: " + lat.toFixed(4) + ", " + lon.toFixed(4);
+            document.getElementById("arrow").style.transform = 
+                "rotate("+ bearing + "deg)";
+        }
+
+        function handleError(err){
+            document.getElementById("status").textContent = 
+                "Couldn't get location: " + err.message;
+        }
+
+        if (navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(showQibla, handleError);
+        } else {
+            document.getElementById("status").textContent = "Geolocation not supported";
+        }
     </script>
     
 </body>
