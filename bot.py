@@ -120,7 +120,7 @@ async def compass(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton(
             text="Open",
-            web_app=WebAppInfo(url="https://"),
+            web_app=WebAppInfo(url=os.environ["VERCEL_URL"]),
         )]
     ])
     await update.message.reply_text("Tap to open: ", reply_markup=keyboard)
