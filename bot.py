@@ -4,7 +4,7 @@ import logging
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -116,12 +116,22 @@ async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logging.exception("AI API call failed.")
         await update.message.reply_text("Sorry, something went wrong. Try again, later!")
 
+async def compass(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton(
+            text="Open",
+            web_app=WebAppInfo(url="https://"),
+        )]
+    ])
+    await update.message.reply_text("Tap to open: ", reply_markup=keyboard)
+
 def register_handlers(app):
     commands = {
         "start": start,
         "help": help,
         "ask": ask,
         "remind": remind,
+        "compass": compass,
     }
     for name, callback in commands.items():
         app.add_handler(CommandHandler(name, callback))

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qibla Compass</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <h1>Working</h1>
+    <p id="greeting">Loading...</p>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+
+        const user = tg.initDataUnsafe.user;
+        const name = user ? user.first_name : "friend";
+        document.getElementById("greeting").textContent = 
+        `Hello, ${name} !`;
+    </script>
+    
+</body>
+</html>
