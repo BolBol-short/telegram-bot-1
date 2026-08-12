@@ -3,21 +3,57 @@ TELEGRAM BOT - PROJECT PLAN
 Author : Bol (Github - @BolBol-short)
 
 I. What is this bot about?
-- This bot is a personal telegram assistant.
-- 
+- This bot is a personal telegram's islamic assistant.
+- Unsure on what to put next
 
 II. Target User
 - My beloved big brother (who is a muslim and he is more like a best friend)
-- Muslim in general
+- Muslims in general? I guess so.
+- Quran related only, no hadith since I am not a muslim.
 
 III. Commands
--
+- StartBot              > Start the bot
+- Help                  > Ask the bots for help with the Commands
+- AskAI                 > Ask AI for related questions (Uses of RAG)
+- AboutAI               > Give info about AI, RAG, Tech Stack
+- CheckDate             > Display the Islamic dates including current dates according the user's location
+- CheckDay              > Display the Islamic current day and time
+- CheckTime             > Display the Islamic current time
+- CheckPrayerTime       > Display the user's prayer time according to their location
+- CheckDirection        > Display the user's phone direction where should their prayer direction is
+- ReadQuran            > Display the Quran to the user
+- GetQuran              > Display a downloadable Quran PDF.
+- GetBotInfo            > Display info of the bot. Display options, like term of service, bot policy, ...
+- EnableRemindPrayer    > Enable user's reminder
+- DisablePrayerReminder > Disable user's reminder
+- EnableDailyQuran      > Enable user's daily quotes from the Quran
+- DisableDailyQuran     > Disable user's daily quotes from the Quran
+- CheckHolidays         > Check the next Holiday, including Eid, Ramadan, etc.
+- EnableHolidays        > Enable the user's reminder when there is a holiday is near (a month, a week, and a day before the holiday)
+- DisbleHolidays        > Disable the user's reminder when there is a holiday is near (a month, a week, and a day before the holiday)
+- CheckNearbyMasjid     > Check the nearby masjid to the user's location
+- AskQuestions          > Display certain questions and provide answers if click on said question
+- TestKnowledge         > Display difficulty then quiz with questions and 4 answers to select and give score.
+- Learn                 > Give options on what to learn, send resources
+- ListenQuran           > Listen to the Quran
+- ShowPrayer            > Show completed prayer for the day and give checklist to mark completed prayer.
+- DownloadUserData(optional) > Ask user which data format to download (.txt, .json, .csv, ...)
+- Sources(optional) > Give sources of the Quran, Hadiths, etc.
 
 IV. Current State 
+- Create a bot
+- Config and Connecting API
 
 V. Tech Stack
 - Python
+- Google Gemini
 
-VI. API usage
-- Google Gemini API
-- AlAdhan API 
+VI. License
+
+VII. Bot's policy
+
+VIII. Term of service
+
+VX. 
+
+X.
