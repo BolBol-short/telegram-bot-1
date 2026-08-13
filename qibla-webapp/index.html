@@ -6,26 +6,19 @@
     <title>Qibla Direction</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { 
-            font-family: sans-serif; 
-            text-align: center; 
-            padding: 30px;
+        body {
+            font-family: sans-serif; text-align: center; padding: 30px;
             background-color: var(--tg-theme-bg-color, #ffffff);
             color: var(--tg-theme-text-color, #000000);
         }
-        #arrow {
-            font-size: 100px;
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-        #bearing {
-            font-size: 22px;
-            margin: 12px;
-            font-weight: bold;
-        }
-        #status {
-            color: var(--tg-theme-hint-color, gray);
-            font-size: 14px;
+        #arrow { font-size: 100px; display: inline-block; transition: transform 0.2s; }
+        #bearing { font-size: 22px; margin: 12px; font-weight: bold; }
+        #heading { font-size: 18px; margin: 8px; }
+        #status, #status2 { color: var(--tg-theme-hint-color, gray); font-size: 14px; }
+        #enable {
+            font-size: 16px; padding: 12px 24px; margin: 16px; border: none; border-radius: 8px;
+            background-color: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
         }
     </style>
 </head>
@@ -33,7 +26,10 @@
     <h1>Qibla Compass</h1>
     <div id="arrow">↑</div>
     <div id="bearing">-</div>
+    <div id="heading">Phone heading: -</div>
+    <button id="enable">Enable Compass</button>
     <div id="status">Getting your location...</div>
+    <div id="status2"></div>
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -45,6 +41,8 @@
         const toRad = (deg) => deg * Math.PI / 180;
         const toDeg = (rad) => rad * 180 / Math.PI;
 
+        let qibla = null;
+
         function qiblaBearing(lat, lon){
             const dLon = toRad(KAABA_LON - lon);
             const lat1 = toRad(lat);
@@ -53,27 +51,65 @@
             const y = Math.sin(dLon) * Math.cos(lat2);
             const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
 
-            let bearing = toDeg(Math.atan2(y, x));
-            return (bearing + 360) % 360;
+            return (toDeg(Math.ata2(y, x)) + 360) % 360;
         }
 
         function showQibla(position){
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
-            const bearing = qiblaBearing(lat, lon);
 
             document.getElementById("bearing").textContent =
                 "Qibla: " + bearing.toFixed(0) + " Deg from North";
             document.getElementById("status").textContent =
                 "You: " + lat.toFixed(4) + ", " + lon.toFixed(4);
-            document.getElementById("arrow").style.transform = 
-                "rotate("+ bearing + "deg)";
         }
 
         function handleError(err){
             document.getElementById("status").textContent = 
                 "Couldn't get location: " + err.message;
         }
+
+        function handleOreintation(event){
+            let heading;
+            if (event.webkitCompassHeading !== undefined && event.webkitCompassHeading !== null){
+                heading = event.webkitCompassHeading;
+            } else if (event.alpha !== null){
+                heading = 360 - event.alpha;
+            } else {
+                return;
+            }
+
+            document.getElementById("heading").textContent =
+            "Phone heading: " + heading.toFixed(0) + "Deg";
+
+            if (qibla !== null){
+                const rotation = qibla - heading;
+                document.getElementById("arrow").style.transform = "rotate(" + rotation + "deg)";
+            }
+        }
+
+        function enableCompass(){
+            if (typeof DeviceOrientationEvent !== "undefined" &&
+                typeof DeviceOrientationEvent.requestPermission === "function"){
+                    DeviceOrientationEvent.requestPermission()
+                        .then((state) => {
+                            if(state === "granted"){
+                                window.addEventListener("deviceorientation", handleOreintation);
+                                document.getElementById("status2").textContent = "Compass enabled";
+                            } else {
+                                document.getElementById("status2").textContent = "Compass permission denied";
+                            }
+                        })
+                        .catch((err) => {
+                            document.getElementById("status2").textContent = "error: " + err;
+                    })
+            } else {
+                window.addEventListener("deviceorientation", handleOreintation);
+                document.getElementById("status2").textContent = "Compass enabled";
+            }
+        }
+
+        document.getElementById("enable").addEventListener("click", enableCompass);
 
         if (navigator.geolocation){
             navigator.geolocation.getCurrentPosition(showQibla, handleError);
