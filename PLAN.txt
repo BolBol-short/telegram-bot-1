@@ -20,8 +20,8 @@ III. Commands
 - CheckDay              > Display the Islamic current day and time
 - CheckTime             > Display the Islamic current time
 - CheckPrayerTime       > Display the user's prayer time according to their location
-- CheckDirection        > Display the user's phone direction where should their prayer direction is
-- ReadQuran            > Display the Quran to the user
++ Qibla                 > Display the user's phone direction where should their prayer direction is
+- ReadQuran             > Display the Quran to the user
 - GetQuran              > Display a downloadable Quran PDF.
 - GetBotInfo            > Display info of the bot. Display options, like term of service, bot policy, ...
 - EnableRemindPrayer    > Enable user's reminder

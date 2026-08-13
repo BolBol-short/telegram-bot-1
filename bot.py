@@ -116,7 +116,7 @@ async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logging.exception("AI API call failed.")
         await update.message.reply_text("Sorry, something went wrong. Try again, later!")
 
-async def compass(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def Qibla(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton(
             text="Open",
@@ -131,7 +131,7 @@ def register_handlers(app):
         "help": help,
         "ask": ask,
         "remind": remind,
-        "compass": compass,
+        "Qibla": Qibla,
     }
     for name, callback in commands.items():
         app.add_handler(CommandHandler(name, callback))
