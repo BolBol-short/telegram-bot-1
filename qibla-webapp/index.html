@@ -51,15 +51,16 @@
             const y = Math.sin(dLon) * Math.cos(lat2);
             const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
 
-            return (toDeg(Math.ata2(y, x)) + 360) % 360;
+            return (toDeg(Math.atan2(y, x)) + 360) % 360;
         }
 
         function showQibla(position){
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
+            qibla = qiblaBearing(lat, lon);
 
             document.getElementById("bearing").textContent =
-                "Qibla: " + bearing.toFixed(0) + " Deg from North";
+                "Qibla: " + qibla.toFixed(0) + " Deg from North";
             document.getElementById("status").textContent =
                 "You: " + lat.toFixed(4) + ", " + lon.toFixed(4);
         }
