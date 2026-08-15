@@ -27,7 +27,7 @@
     <div id="arrow">↑</div>
     <div id="bearing">-</div>
     <div id="heading">Phone heading: -</div>
-    <button id="enable" style="display: none;">Enable Compass</button>
+    <button id="enable">Enable Compass</button>
     <div id="status">Getting your location...</div>
     <div id="status2"></div>
 
@@ -102,33 +102,36 @@
         }
 
         function startCompass(){
-            window.addEventListener("deviceorientation", handleOreintation);
-            document.getElementById("status2").textContent = "Compass active";
-            document.getElementById("enable").style.display = "none";
+            if("ondeviceorientationabsolute" in window){
+                window.addEventListener("deviceorientationabsolute", handleOreintation)
+            } else {
+                window.addEventListener("deviceorientation", handleOreintation)
+            }
+            document.getElementById("status2").textContent = "Compass activated"
         }
 
         function initCompass(){
-            if (typeof DeviceOrientationEvent !== "undefined" &&
-                typeof DeviceOrientationEvent.requestPermission === "function"
-            ){
-                document.getElementById("enable").style.display = "inline-block";
-            } else {
-                startCompass();
-            }
+            document.getElementById("enable").style.display = "inline-block";
         }
 
         function enableCompass(){
-            DeviceOrientationEvent.requestPermission()
-                .then((state) => {
-                    if (state === "granted"){
-                        startCompass();
-                    } else {
-                        document.getElementById("status2").textContent = "Permission denied";
-                    }
-                })
-                .catch((err) => {
-                    document.getElementById("status2").textContent = "error: " + err;
-                })
+            if(typeof DeviceOrientationEvent !== "undefined" &&
+                typeof DeviceOrientationEvent.requestPermission === "function"
+            ){
+                DeviceOrientationEvent.requestPermission()
+                    .then((state) => {
+                        if (state === "granted"){
+                            startCompass();
+                        } else {
+                            document.getElementById("status2").textContent = "Permission denied";
+                        }
+                    })
+                    .catch((err) => {
+                        document.getElementById("status2").textContent = "error: " + err;
+                    })
+            } else {
+                startCompass();
+            }
         }
 
         document.getElementById("enable").addEventListener("click", enableCompass);
